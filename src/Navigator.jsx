@@ -14,12 +14,11 @@ export default function Navigator() {
     <Stack.Navigator
       screenOptions={{
         headerShown:false,
-        cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
         presentation: "transparentModal",
       }}
     >
       <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Location" component={LocationScreen} />
+      <Stack.Screen options={{cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS}} name="Location" component={LocationScreen} />
     </Stack.Navigator>
   );
 }

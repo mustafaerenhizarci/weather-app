@@ -4,6 +4,8 @@ import {
   TouchableOpacity,
   ScrollView,
   RefreshControl,
+  Text,
+  ImageBackground,
 } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
@@ -32,26 +34,28 @@ export default function HomePage({ navigation }) {
       }
       className="h-full bg-gray-900"
       contentContainerStyle={{
-        display: "flex",
+        flex:1,
         justifyContent: "flex-start",
         alignItems: "center",
       }}
     >
-      <View className="w-[90%] mt-5 mb-1 flex flex-row justify-between items-center h-max">
-        <TouchableOpacity className="w-16 py-1 flex justify-center items-center  rounded-md">
-          <FontAwesomeIcon size={23} color="#eee" icon={faEllipsisV} />
-        </TouchableOpacity>
+      <ImageBackground source={require("../../assets/app-bg.png")} className="w-full h-full flex justify-start items-center">
+        <View className="w-[90%] mt-5 mb-1 flex flex-row justify-between items-center h-max">
+          <TouchableOpacity className="w-16 py-1 flex justify-center items-center  rounded-md">
+            <FontAwesomeIcon size={23} color="#eee" icon={faEllipsisV} />
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("Location");
-          }}
-          className="w-16 py-1 flex justify-center items-center  rounded-md"
-        >
-          <FontAwesomeIcon size={23} color="#eee" icon={faLocationArrow} />
-        </TouchableOpacity>
-      </View>
-      <Current />
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Location");
+            }}
+            className="w-16 py-1 flex justify-center items-center  rounded-md"
+          >
+            <FontAwesomeIcon size={23} color="#eee" icon={faLocationArrow} />
+          </TouchableOpacity>
+        </View>
+        <Current />
+      </ImageBackground>
     </ScrollView>
   );
 }
