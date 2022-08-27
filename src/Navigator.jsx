@@ -18,7 +18,7 @@ export default function Navigator() {
       }}
     >
       <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen options={{cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS}} name="Location" component={LocationScreen} />
+      <Stack.Screen options={{cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter}} name="Location" component={LocationScreen} />
     </Stack.Navigator>
   );
 }

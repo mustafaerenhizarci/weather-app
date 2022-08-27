@@ -1,3 +1,4 @@
+import { useSyncExternalStore } from "react";
 import { Image } from "react-native";
 
 const Images = {
@@ -24,8 +25,9 @@ const Images = {
 export default function WeatherImage({ id }) {
   return (
     <Image
+      style={{transform:[{scale:3}]}}
       source={Images[id]}
-      className="w-[40%] h-full scale-150"
+      className="w-[40%] h-full"
       resizeMode="center"
     />
   );

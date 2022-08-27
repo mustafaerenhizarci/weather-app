@@ -24,6 +24,7 @@
     "expo-location": "^14.3.0",
     "expo-splash-screen": "^0.16.2",
     "expo-status-bar": "~1.4.0",
+    "expo-updates": "~0.14.5",
     "nanoid": "^4.0.0",
     "react": "18.0.0",
     "react-native": "0.69.5",

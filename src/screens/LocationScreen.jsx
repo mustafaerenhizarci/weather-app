@@ -78,7 +78,7 @@ export default function LocationScreen({ navigation }) {
   };
 
   return (
-    <View className="h-full py-4 flex justify-start items-center bg-gray-900">
+    <View className="h-full pt-8 flex justify-start items-center bg-gray-900">
       <View className="w-full flex flex-row justify-around items-start">
         <TouchableOpacity
           onPress={() => {
@@ -137,7 +137,7 @@ export default function LocationScreen({ navigation }) {
               className="bg-red-700 px-2 py-1  my-3 w-[30%] rounded-xl"
             >
               <Text
-                key={customAlphabet("abcdefghijklmnopqrstuvwxyz0123456789", 10)}
+                key={Math.random() * 1000}
                 style={{ fontFamily: "DosisRegular" }}
                 className="text-center text-base text-white"
               >

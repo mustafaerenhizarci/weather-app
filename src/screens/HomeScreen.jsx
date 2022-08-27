@@ -14,10 +14,21 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Current from "../components/Current";
 import { WeatherContext } from "../context/WeatherContext";
+import {useFonts}  from "expo-font";
 
-export default function HomePage({ navigation }) {
+
+
+export default function HomeScreen({ navigation }) {
   const { fetchCurrentWeather } = useContext(WeatherContext);
-
+  
+  const [isLoaded] = useFonts({
+    DosisRegular:require('../../assets/fonts/Dosis/Dosis-Regular.ttf')
+  })
+  
+  if (!isLoaded) {
+    return null;
+  }
+  
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = async () => {
@@ -27,6 +38,41 @@ export default function HomePage({ navigation }) {
     }
   };
 
+  const getLastUpdate = () => {
+    const days = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "November",
+      "December",
+    ];
+
+    const today = new Date();
+
+    const day = days[today.getDay()];
+    const date = today.getDate();
+    const month = months[today.getMonth()];
+
+    const clock = today.toLocaleTimeString();
+
+    return `${day}, ${date} ${month} ${clock}`;
+  };
+
   return (
     <ScrollView
       refreshControl={
@@ -34,16 +80,23 @@ export default function HomePage({ navigation }) {
       }
       className="h-full bg-gray-900"
       contentContainerStyle={{
-        flex:1,
+        flex: 1,
         justifyContent: "flex-start",
         alignItems: "center",
       }}
     >
-      <ImageBackground source={require("../../assets/app-bg.png")} className="w-full h-full flex justify-start items-center">
+      <ImageBackground
+        source={require("../../assets/sky/2.jpg")}
+        className="w-full h-full flex justify-start items-center"
+      >
         <View className="w-[90%] mt-5 mb-1 flex flex-row justify-between items-center h-max">
           <TouchableOpacity className="w-16 py-1 flex justify-center items-center  rounded-md">
             <FontAwesomeIcon size={23} color="#eee" icon={faEllipsisV} />
           </TouchableOpacity>
+
+          <Text style={{fontFamily:"DosisRegular"}} className="text-gray-400 text-sm">
+            Updated: {getLastUpdate()}
+          </Text>
 
           <TouchableOpacity
             onPress={() => {
