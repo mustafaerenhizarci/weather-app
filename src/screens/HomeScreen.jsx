@@ -13,7 +13,7 @@ import {
 import Current from "../components/Current";
 import { WeatherContext } from "../context/WeatherContext";
 
-export default function HomePage({navigation}) {
+export default function HomePage({ navigation }) {
   const { fetchCurrentWeather } = useContext(WeatherContext);
 
   const [refreshing, setRefreshing] = useState(false);
@@ -42,7 +42,12 @@ export default function HomePage({navigation}) {
           <FontAwesomeIcon size={23} color="#eee" icon={faEllipsisV} />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => {navigation.navigate('Location')}} className="w-16 py-1 flex justify-center items-center  rounded-md">
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Location");
+          }}
+          className="w-16 py-1 flex justify-center items-center  rounded-md"
+        >
           <FontAwesomeIcon size={23} color="#eee" icon={faLocationArrow} />
         </TouchableOpacity>
       </View>
