@@ -22,7 +22,7 @@
     "expo": "~46.0.9",
     "expo-font": "^10.2.0",
     "expo-location": "^14.3.0",
-    "expo-splash-screen": "^0.16.2",
+    "expo-splash-screen": "~0.16.1",
     "expo-status-bar": "~1.4.0",
     "expo-updates": "~0.14.5",
     "nanoid": "^4.0.0",

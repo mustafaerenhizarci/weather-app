@@ -1,4 +1,3 @@
-import { useSyncExternalStore } from "react";
 import { Image } from "react-native";
 
 const Images = {
