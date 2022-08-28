@@ -6,24 +6,19 @@ import {
   ImageBackground,
 } from "react-native";
 import { useFonts } from "expo-font";
-import { useContext } from "react";
+import { useContext,useState } from "react";
 import { WeatherContext } from "../context/WeatherContext";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faWind, faDroplet } from "@fortawesome/free-solid-svg-icons";
 import WeatherImage from "./WeatherImage";
 import Logo from "./Logo";
+import Loading from "./shared/Loading";
 
-function upperFirst(str) {
-  return str
-    .split(" ")
-    .map((word) => {
-      return word[0].toUpperCase() + word.slice(1, word.length);
-    })
-    .join(" ");
-}
+
 
 export default function Current() {
-  const { weatherData } = useContext(WeatherContext);
+  const { weatherData,isCurrentReady,upperFirst } = useContext(WeatherContext);
+  
 
   const [fontsLoaded] = useFonts({
     MontserratBlack: require("../../assets/fonts/Montserrat/Montserrat-Black.ttf"),
@@ -36,18 +31,16 @@ export default function Current() {
     return null;
   }
 
-  if (Object.keys(weatherData).length === 0) {
+  if (!isCurrentReady || weatherData.name === undefined) {
     return (
-      <View className="w-[90%] h-24 flex justify-center items-center my-4 bg-gray-800 rounded-lg">
-        <ActivityIndicator size="large" color="#fbbf24" />
-      </View>
+      <Loading/>
     );
   }
 
   return (
     <View className="w-[90%] h-max my-4  rounded-lg">
       <View className="flex flex-row justify-around items-center w-full h-24">
-        <Logo/>
+        <Logo />
         <View
           style={{ borderWidth: 1, borderColor: "#475569" }}
           className="w-[60%] flex justify-center items-center bg-gray-800/30 h-full mb-1 rounded-md"
@@ -66,10 +59,8 @@ export default function Current() {
           </Text>
         </View>
       </View>
-      <View
-        style={{ borderWidth: 1 }}
-        className="w-full bg-blend-darken bg-gray-800/40 border-gray-600 my-2 h-60 rounded-md"
-      >
+
+      <View className="w-full  my-2 h-60 rounded-md">
         <View className="w-full flex flex-row justify-around items-center h-[60%]">
           <WeatherImage id={weatherData.weather[0].icon} />
           <View className="w-[40%] h-full flex justify-center items-center mr-4 ">

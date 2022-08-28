@@ -24,6 +24,8 @@ export default function LocationScreen({ navigation }) {
     setGPS,
     location,
     setLocation,
+    setIsCurrentReady,
+    setIsDailyReady,
   } = useContext(WeatherContext);
 
   const [isLoaded] = useFonts({
@@ -78,13 +80,13 @@ export default function LocationScreen({ navigation }) {
   };
 
   return (
-    <View className="h-full pt-8 flex justify-start items-center bg-gray-900">
-      <View className="w-full flex flex-row justify-around items-start">
+    <View style={{backgroundColor:"#090F23"}} className="h-full pt-8 flex justify-start items-center">
+      <View className="w-full flex flex-row justify-around items-center">
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("Home");
           }}
-          className="w-12 bg-gray-800 h-12 flex justify-center items-center rounded-full "
+          className="px-2 h-12 flex justify-center items-center"
         >
           <FontAwesomeIcon icon={faArrowLeft} size={18} color="#fff" />
         </TouchableOpacity>
@@ -94,14 +96,14 @@ export default function LocationScreen({ navigation }) {
           value={searchLocation}
           style={{ fontFamily: "MontserratLight" }}
           placeholderTextColor="#eee"
-          className="w-[60%] bg-gray-700 rounded-md px-3 py-1 text-lg text-white h-12"
+          className="w-[60%] bg-gray-700 rounded-md px-3 py-1 text-md text-white"
           placeholder="Enter Location"
         />
         {storedLocations.length > 0 &&
           (!editMode ? (
             <TouchableOpacity
               onPress={handleEditMode}
-              className="rounded-md h-12 flex justify-center items-center px-4 py-2 bg-amber-300 text-black"
+              className="rounded-md flex justify-center items-center px-4 py-2 bg-amber-300 text-black"
             >
               <FontAwesomeIcon icon={faPenToSquare} color="black" size={18} />
             </TouchableOpacity>
@@ -114,13 +116,15 @@ export default function LocationScreen({ navigation }) {
             </TouchableOpacity>
           ))}
       </View>
-      <View className="w-full p-5 my-10 flex flex-wrap flex-row justify-around items-center">
+      <View className="w-full px-6 py-4 flex flex-wrap flex-row justify-start gap-2 items-center">
         <TouchableOpacity
           onPress={() => {
             setGPS();
+            setIsCurrentReady(false);
+            setIsDailyReady(false);
             navigation.navigate("Home");
           }}
-          className={` bg-amber-400 px-2 py-1 my-3 w-[30%] rounded-xl flex justify-center items-center`}
+          className={` bg-amber-400 px-3 py-2 my-3 rounded-sm flex justify-center items-center`}
         >
           <FontAwesomeIcon
             icon={faLocationCrosshairs}
@@ -133,8 +137,10 @@ export default function LocationScreen({ navigation }) {
             <TouchableOpacity
               onPress={() => {
                 deleteStoredLocation(item);
+                setGPS();
+                setIsCurrentReady(false);
               }}
-              className="bg-red-700 px-2 py-1  my-3 w-[30%] rounded-xl"
+              className="bg-red-700 px-3 py-1 my-3 w-min rounded-sm"
             >
               <Text
                 key={Math.random() * 1000}
@@ -148,11 +154,13 @@ export default function LocationScreen({ navigation }) {
             <TouchableOpacity
               onPress={() => {
                 setLocation(item);
+                setIsCurrentReady(false);
+                setIsDailyReady(false);
                 navigation.navigate("Home");
               }}
               className={`${
                 location === item ? "bg-blue-700" : "bg-gray-800"
-              } px-2 py-1  my-3 w-[30%] rounded-xl`}
+              } px-3 py-1  my-3 w-min rounded-sm`}
             >
               <Text
                 key={customAlphabet("abcdefghijklmnopqrstuvwxyz0123456789", 10)}

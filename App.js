@@ -12,7 +12,7 @@ function App() {
   SplashScreen.hideAsync();
   return (
     <TailwindProvider>
-      <StatusBar barStyle={"light-content"} backgroundColor="#0f172a" />
+      <StatusBar barStyle={"default"} backgroundColor="#090F23" />
       <WeatherContext>
         <NavigationContainer>
           <Navigator />

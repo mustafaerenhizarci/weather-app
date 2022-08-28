@@ -21,12 +21,12 @@ const Images = {
   "50n": require("../../assets/weather-icons/50n.png"),
 };
 
-export default function WeatherImage({ id }) {
+export default function WeatherImage({ id,scale=3 }) {
   return (
     <Image
-      style={{transform:[{scale:3}]}}
+      style={{transform:[{scale:scale}]}}
       source={Images[id]}
-      className="w-[40%] h-full"
+      className="w-8 h-6 my-8"
       resizeMode="center"
     />
   );
