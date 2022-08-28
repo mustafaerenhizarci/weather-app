@@ -21,13 +21,7 @@ import {useFonts}  from "expo-font";
 export default function HomeScreen({ navigation }) {
   const { fetchCurrentWeather } = useContext(WeatherContext);
   
-  const [isLoaded] = useFonts({
-    DosisRegular:require('../../assets/fonts/Dosis/Dosis-Regular.ttf')
-  })
   
-  if (!isLoaded) {
-    return null;
-  }
   
   const [refreshing, setRefreshing] = useState(false);
 
@@ -81,7 +75,7 @@ export default function HomeScreen({ navigation }) {
       className="h-full bg-gray-900"
       contentContainerStyle={{
         flex: 1,
-        justifyContent: "flex-start",
+        justifyContent: "center",
         alignItems: "center",
       }}
     >
@@ -94,7 +88,7 @@ export default function HomeScreen({ navigation }) {
             <FontAwesomeIcon size={23} color="#eee" icon={faEllipsisV} />
           </TouchableOpacity>
 
-          <Text style={{fontFamily:"DosisRegular"}} className="text-gray-400 text-sm">
+          <Text className="text-gray-400 text-xs">
             Updated: {getLastUpdate()}
           </Text>
 
