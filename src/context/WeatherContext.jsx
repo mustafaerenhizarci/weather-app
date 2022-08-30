@@ -5,14 +5,15 @@ export const WeatherContext = createContext();
 
 export default function WeatherProvider({ children }) {
   const days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
+    "Pazar",
+    "Pazartesi",
+    "Salı",
+    "Çarşamba",
+    "Perşembe",
+    "Cuma",
+    "Cumartesi",
   ];
+
   const API_KEY = "bdaf867dfce9dd5890c6936c19cbae38";
   const [location, setLocation] = useState("Ankara");
   const [storedLocations, setStoredLocations] = useState([]);
@@ -26,9 +27,11 @@ export default function WeatherProvider({ children }) {
   const [searchLocation, setSearchLocation] = useState("");
   const [isCurrentReady, setIsCurrentReady] = useState(false);
   const [isDailyReady, setIsDailyReady] = useState(false);
+  const [isLocationsReady,setIsLocationsReady] = useState(true);
 
   async function fetchCurrentWeather() {
     const data = await fetch(API_URL).then((res) => res.json());
+
     setWeatherData(data);
     if (data.cod === 200) {
       setIsCurrentReady(true);
@@ -39,6 +42,7 @@ export default function WeatherProvider({ children }) {
   }
 
   async function fetchForecastWeather() {
+    const today = new Date();
     const data = await fetch(FORECAST_API_URL).then((res) => res.json());
 
     const dataConfigured = data.list.map((item) => {
@@ -54,20 +58,54 @@ export default function WeatherProvider({ children }) {
       };
     });
 
-    const dailyData = {
-      monday: dataConfigured.filter((item) => item.day === "Monday"),
-      tuesday: dataConfigured.filter((item) => item.day === "Tuesday"),
-      wednesday: dataConfigured.filter((item) => item.day === "Wednesday"),
-      thursday: dataConfigured.filter((item) => item.day === "Thursday"),
-      friday: dataConfigured.filter((item) => item.day === "Friday"),
-      saturday: dataConfigured.filter((item) => item.day === "Saturday"),
-      sunday: dataConfigured.filter((item) => item.day === "Sunday"),
-    };
+    const dailyForecast = days.map((day) => {
+      return dataConfigured
+        .filter((item) => item.day === day)
+        .map((info) => {
+          if (info.day === days[today.getDay()]) {
+            info.day = "Bugün";
+          } else if (info.day === days[today.getDay() + 1]) {
+            info.day = "Yarın";
+          }
+          return info;
+        });
+    });
 
-    setForecast(dailyData);
+    setForecast(dailyForecast);
     setIsDailyReady(true);
 
-    return 1
+    return 1;
+  }
+
+  async function fetchNearLocations(countryName) {
+    const country = `${encodeURIComponent("country")}=${encodeURIComponent(
+      countryName
+    )}`;
+
+    const data = await fetch(
+      "https://countriesnow.space/api/v0.1/countries/population/cities/filter",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        referrerPolicy: "no-referrer",
+        body: country,
+      }
+    ).then((res) => res.json());
+
+    const ordered = data.data
+      .map((city) => {
+        return {
+          name: upperFirst(city.city.toLowerCase()),
+          population: Math.round(+city.populationCounts[0].value),
+        };
+      })
+      .sort((a, b) => b.population - a.population).map(item => item.name);
+
+    setStoredLocations(ordered.slice(0,15));
+       
+    
   }
 
   async function setGPS() {
@@ -79,23 +117,28 @@ export default function WeatherProvider({ children }) {
 
     const gps = await Location.getCurrentPositionAsync({});
 
-    setClientLocation(gps.coords.latitude, gps.coords.longitude);
+    setLocation(
+      await getClientLocationName(gps.coords.latitude, gps.coords.longitude)
+    );
+    setIsCurrentReady(true);
+    setIsDailyReady(true);
+
+    return gps;
   }
 
-  async function setClientLocation(lat, lon) {
+  async function getClientLocationName(lat, lon) {
     const clientLocationName = await fetch(
       `http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=5&appid=${API_KEY}`
     ).then((res) => res.json());
 
     if (clientLocationName.length > 0) {
-      setLocation(clientLocationName[0].name);
-      setIsCurrentReady(true);
-      setIsDailyReady(true);
+      return clientLocationName[0].name;
     }
   }
 
   useEffect(() => {
     setGPS();
+    fetchNearLocations("turkey");
   }, []);
 
   useEffect(() => {
@@ -119,6 +162,7 @@ export default function WeatherProvider({ children }) {
         lang,
         fetchCurrentWeather,
         fetchForecastWeather,
+        fetchNearLocations,
         weatherData,
         forecast,
         searchLocation,
@@ -132,6 +176,8 @@ export default function WeatherProvider({ children }) {
         setIsCurrentReady,
         isDailyReady,
         setIsDailyReady,
+        isLocationsReady,
+        setIsLocationsReady,
         upperFirst,
         days,
       }}

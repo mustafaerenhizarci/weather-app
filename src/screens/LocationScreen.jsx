@@ -10,6 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useFonts } from "expo-font";
 import { customAlphabet } from "nanoid/non-secure";
+import Loading from "../components/shared/Loading";
 
 export default function LocationScreen({ navigation }) {
   const [editMode, setEditMode] = useState(false);
@@ -26,6 +27,8 @@ export default function LocationScreen({ navigation }) {
     setLocation,
     setIsCurrentReady,
     setIsDailyReady,
+    isLocationsReady,
+    setIsLocationsReady,
   } = useContext(WeatherContext);
 
   const [isLoaded] = useFonts({
@@ -38,6 +41,7 @@ export default function LocationScreen({ navigation }) {
   }
 
   async function isLocationAvaible(location) {
+    setIsLocationsReady(false)
     const data = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${API_KEY}&lang=${lang}&units=metric`
     ).then((res) => res.json());
@@ -49,14 +53,15 @@ export default function LocationScreen({ navigation }) {
           Alert.alert(
             "Place already added!",
             `There is place named ${data.name}.`,
-            [{ text: "OK" }]
+            [{ text: "OK",onPress:setIsLocationsReady(true) }]
           );
           return prev;
         }
       });
+      setIsLocationsReady(true);
     } else {
       Alert.alert("Search Error", `There is no place named ${searchLocation}`, [
-        { text: "OK" },
+        { text: "OK",onPress:setIsLocationsReady(true) },
       ]);
     }
   }
@@ -75,12 +80,16 @@ export default function LocationScreen({ navigation }) {
       if (prev.length === 1) {
         setEditMode(false);
       }
+      setIsLocationsReady(true);
       return prev.filter((item) => item !== location);
     });
   };
 
   return (
-    <View style={{backgroundColor:"#090F23"}} className="h-full pt-8 flex justify-start items-center">
+    <View
+      style={{ backgroundColor: "#090F23" }}
+      className="h-full pt-8 flex justify-start items-center"
+    >
       <View className="w-full flex flex-row justify-around items-center">
         <TouchableOpacity
           onPress={() => {
@@ -116,12 +125,13 @@ export default function LocationScreen({ navigation }) {
             </TouchableOpacity>
           ))}
       </View>
-      <View className="w-full px-6 py-4 flex flex-wrap flex-row justify-start gap-2 items-center">
+      <Text style={{fontFamily:"MontserratLight"}} className="text-gray-400 text-sm text-left w-full px-6 pt-3">Suggested Places: </Text>
+      <View className="w-full  px-6 py-4 flex flex-wrap flex-row justify-start gap-2 items-center">
         <TouchableOpacity
           onPress={() => {
             setGPS();
-            setIsCurrentReady(false);
             setIsDailyReady(false);
+            setIsCurrentReady(false);
             navigation.navigate("Home");
           }}
           className={` bg-amber-400 px-3 py-2 my-3 rounded-sm flex justify-center items-center`}
@@ -132,10 +142,12 @@ export default function LocationScreen({ navigation }) {
             size={20}
           />
         </TouchableOpacity>
-        {storedLocations.map((item) => {
+        
+        {(isLocationsReady) ? storedLocations.map((item) => {
           return editMode ? (
             <TouchableOpacity
               onPress={() => {
+                setIsLocationsReady(false);
                 deleteStoredLocation(item);
                 setGPS();
                 setIsCurrentReady(false);
@@ -154,8 +166,9 @@ export default function LocationScreen({ navigation }) {
             <TouchableOpacity
               onPress={() => {
                 setLocation(item);
-                setIsCurrentReady(false);
                 setIsDailyReady(false);
+                setIsCurrentReady(false);
+
                 navigation.navigate("Home");
               }}
               className={`${
@@ -171,7 +184,7 @@ export default function LocationScreen({ navigation }) {
               </Text>
             </TouchableOpacity>
           );
-        })}
+        }) : <Loading text="Locations Loading..."/>  }
       </View>
     </View>
   );

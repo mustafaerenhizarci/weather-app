@@ -5,28 +5,30 @@ import {
   faEllipsisV,
 } from "@fortawesome/free-solid-svg-icons";
 
+
 const getLastUpdate = () => {
   const days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
+    "Pazar",
+    "Pazartesi",
+    "Salı",
+    "Çarşamba",
+    "Perşembe",
+    "Cuma",
+    "Cumartesi",
   ];
   const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "November",
-    "December",
+    "Ocak",
+    "Şubat",
+    "Mart",
+    "Nisan",
+    "Mayıs",
+    "Haziran",
+    "Temmuz",
+    "Ağustos",
+    "Eylül",
+    "Ekim",
+    "Kasım",
+    "Aralık",
   ];
 
   const today = new Date();
@@ -35,7 +37,7 @@ const getLastUpdate = () => {
   const date = today.getDate();
   const month = months[today.getMonth()];
 
-  const clock = today.toLocaleTimeString();
+  const clock = today.toLocaleTimeString().slice(0,5);
 
   return `${day}, ${date} ${month} ${clock}`;
 };
@@ -47,7 +49,7 @@ export default function HomeTop({ navigation }) {
         <FontAwesomeIcon size={23} color="#eee" icon={faEllipsisV} />
       </TouchableOpacity>
 
-      <Text className="text-gray-400 text-xs">Updated: {getLastUpdate()}</Text>
+      <Text className="text-gray-400 text-xs">Güncelleme: {getLastUpdate()}</Text>
 
       <TouchableOpacity
         onPress={() => {

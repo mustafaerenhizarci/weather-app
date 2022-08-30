@@ -6,7 +6,7 @@ import {
   ImageBackground,
 } from "react-native";
 import { useFonts } from "expo-font";
-import { useContext,useState } from "react";
+import { useContext, useState } from "react";
 import { WeatherContext } from "../context/WeatherContext";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faWind, faDroplet } from "@fortawesome/free-solid-svg-icons";
@@ -14,11 +14,9 @@ import WeatherImage from "./WeatherImage";
 import Logo from "./Logo";
 import Loading from "./shared/Loading";
 
-
-
 export default function Current() {
-  const { weatherData,isCurrentReady,upperFirst } = useContext(WeatherContext);
-  
+  const { weatherData, isCurrentReady, upperFirst } =
+    useContext(WeatherContext);
 
   const [fontsLoaded] = useFonts({
     MontserratBlack: require("../../assets/fonts/Montserrat/Montserrat-Black.ttf"),
@@ -32,9 +30,7 @@ export default function Current() {
   }
 
   if (!isCurrentReady || weatherData.name === undefined) {
-    return (
-      <Loading/>
-    );
+    return <Loading />;
   }
 
   return (
@@ -49,7 +45,9 @@ export default function Current() {
             style={{ fontFamily: "DosisRegular" }}
             className="text-center text-4xl text-white"
           >
-            {weatherData.name}
+            {weatherData.name.includes("Province")
+              ? weatherData.name.split(" ")[0]
+              : weatherData.name}
           </Text>
           <Text
             style={{ fontFamily: "DosisRegular" }}
@@ -62,7 +60,7 @@ export default function Current() {
 
       <View className="w-full  my-2 h-60 rounded-md">
         <View className="w-full flex flex-row justify-around items-center h-[60%]">
-          <WeatherImage id={weatherData.weather[0].icon} />
+          <WeatherImage id={weatherData.weather[0].icon} w={90} h={90} />
           <View className="w-[40%] h-full flex justify-center items-center mr-4 ">
             <Text
               style={{ fontFamily: "MontserratBold" }}
@@ -80,20 +78,20 @@ export default function Current() {
         </View>
         <View className=" h-[40%] flex flex-row justify-around items-center">
           <View className=" flex flex-row justify-around gap-4 items-center">
-            <FontAwesomeIcon icon={faWind} size={30} color="#fde68a" />
+            <FontAwesomeIcon icon={faWind} size={25} color="#fde68a" />
             <Text
               style={{ fontFamily: "MontserratLight" }}
-              className="text-2xl text-white"
+              className="text-lg text-white"
             >
               {Math.floor(weatherData.wind.speed)} km/h
             </Text>
           </View>
 
           <View className=" flex flex-row justify-around gap-4 items-center">
-            <FontAwesomeIcon icon={faDroplet} size={30} color="#60a5fa" />
+            <FontAwesomeIcon icon={faDroplet} size={25} color="#60a5fa" />
             <Text
               style={{ fontFamily: "MontserratLight" }}
-              className="text-2xl text-white"
+              className="text-lg text-white"
             >
               {weatherData.main.humidity} %
             </Text>

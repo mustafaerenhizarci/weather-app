@@ -1,33 +1,48 @@
-import { Image } from "react-native";
+import { View } from "react-native";
 
-const Images = {
-  "01d": require("../../assets/weather-icons/01d.png"),
-  "01n": require("../../assets/weather-icons/01n.png"),
-  "02d": require("../../assets/weather-icons/02d.png"),
-  "02n": require("../../assets/weather-icons/02n.png"),
-  "03d": require("../../assets/weather-icons/03d.png"),
-  "03n": require("../../assets/weather-icons/03n.png"),
-  "04d": require("../../assets/weather-icons/04d.png"),
-  "04n": require("../../assets/weather-icons/04n.png"),
-  "09d": require("../../assets/weather-icons/09d.png"),
-  "09n": require("../../assets/weather-icons/09n.png"),
-  "10d": require("../../assets/weather-icons/10d.png"),
-  "10n": require("../../assets/weather-icons/10n.png"),
-  "11d": require("../../assets/weather-icons/11d.png"),
-  "11n": require("../../assets/weather-icons/11n.png"),
-  "13d": require("../../assets/weather-icons/13d.png"),
-  "13n": require("../../assets/weather-icons/13n.png"),
-  "50d": require("../../assets/weather-icons/50d.png"),
-  "50n": require("../../assets/weather-icons/50n.png"),
-};
+import Svg01d from "../../assets/weather-icons/icon01d.svg";
+import Svg01n from "../../assets/weather-icons/icon01n.svg";
+import Svg02d from "../../assets/weather-icons/icon02d.svg";
+import Svg02n from "../../assets/weather-icons/icon02n.svg";
+import Svg03d from "../../assets/weather-icons/icon03d.svg";
+import Svg03n from "../../assets/weather-icons/icon03n.svg";
+import Svg04d from "../../assets/weather-icons/icon04d.svg";
+import Svg04n from "../../assets/weather-icons/icon04n.svg";
+import Svg09d from "../../assets/weather-icons/icon09d.svg";
+import Svg09n from "../../assets/weather-icons/icon09n.svg";
+import Svg10d from "../../assets/weather-icons/icon10d.svg";
+import Svg10n from "../../assets/weather-icons/icon10n.svg";
+import Svg11d from "../../assets/weather-icons/icon11d.svg";
+import Svg11n from "../../assets/weather-icons/icon11n.svg";
+import Svg13d from "../../assets/weather-icons/icon13d.svg";
+import Svg13n from "../../assets/weather-icons/icon13n.svg";
+import Svg50d from "../../assets/weather-icons/icon50d.svg";
+import Svg50n from "../../assets/weather-icons/icon50n.svg";
 
-export default function WeatherImage({ id,scale=3 }) {
-  return (
-    <Image
-      style={{transform:[{scale:scale}]}}
-      source={Images[id]}
-      className="w-8 h-6 my-8"
-      resizeMode="center"
-    />
-  );
+export default function WeatherImage({ id = "01d", w = 100, h = 100 }) {
+  const svgs = {
+    "01d": <Svg01d width={w} height={h} />,
+    "01n": <Svg01n width={w} height={h} />,
+    "02d": <Svg02d width={w} height={h} />,
+    "02n": <Svg02n width={w} height={h} />,
+    "03d": <Svg03d width={w} height={h} />,
+    "03n": <Svg03n width={w} height={h} />,
+    "04d": <Svg04d width={w} height={h} />,
+    "04n": <Svg04n width={w} height={h} />,
+    "09d": <Svg09d width={w} height={h} />,
+    "09n": <Svg09n width={w} height={h} />,
+    "10d": <Svg10d width={w} height={h} />,
+    "10n": <Svg10n width={w} height={h} />,
+    "11d": <Svg11d width={w} height={h} />,
+    "11n": <Svg11n width={w} height={h} />,
+    "13d": <Svg13d width={w} height={h} />,
+    "13n": <Svg13n width={w} height={h} />,
+    "50d": <Svg50d width={w} height={h} />,
+    "50n": <Svg50n width={w} height={h} />,
+  };
+
+  return <View className="my-3">
+    {svgs[id]}
+  </View>;
 }
+
