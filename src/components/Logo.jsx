@@ -11,18 +11,13 @@ export default function Logo() {
   }
 
   return (
-    <View className="w-[35%] p-2 bg-white mb-1 h-full rounded-lg flex justify-center items-center">
+    <View className="w-[35%] mb-1 h-full rounded-lg flex justify-center items-center">
       <Image
-        className="w-full h-[70%]"
+        className="w-[100%] h-[100%]"
         source={require("../../assets/logo.png")}
         resizeMode="center"
       />
-      <Text
-        style={{ fontFamily: "MontserratBold" }}
-        className="text-gray-900 text-center text-md"
-      >
-        Weather
-      </Text>
+      
     </View>
   );
 }
