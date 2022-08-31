@@ -15,7 +15,7 @@ export default function WeatherProvider({ children }) {
   ];
 
   const API_KEY = "bdaf867dfce9dd5890c6936c19cbae38";
-  const [location, setLocation] = useState("Ankara");
+  const [location, setLocation] = useState(0);
   const [storedLocations, setStoredLocations] = useState([]);
   const [lang, setLang] = useState("tr");
 
@@ -28,7 +28,7 @@ export default function WeatherProvider({ children }) {
   const [searchLocation, setSearchLocation] = useState("");
   const [isCurrentReady, setIsCurrentReady] = useState(false);
   const [isDailyReady, setIsDailyReady] = useState(false);
-  const [isHourlyReady,setIsHourlyReady] = useState(false);
+  const [isHourlyReady, setIsHourlyReady] = useState(false);
   const [isLocationsReady, setIsLocationsReady] = useState(true);
 
   async function fetchCurrentWeather() {
@@ -84,8 +84,8 @@ export default function WeatherProvider({ children }) {
     });
 
     forecast.unshift(forecast.pop(forecast.length - 1));
-    
-    setActiveDay(forecast[0].length > 0 ? forecast[0] : forecast[1]);
+
+    setActiveDay(forecast[0].length > 1 ? forecast[0] : forecast[1]);
     setIsHourlyReady(true);
 
     setForecast(forecast);
@@ -159,6 +159,9 @@ export default function WeatherProvider({ children }) {
   }, []);
 
   useEffect(() => {
+    if (!location) {
+      setGPS();
+    }
     fetchCurrentWeather();
     fetchForecastWeather();
   }, [location]);

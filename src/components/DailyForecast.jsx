@@ -1,21 +1,23 @@
-import { useContext } from "react";
-import { View, Text, ScrollView, Touchable, TouchableOpacity } from "react-native";
+import { useContext, useEffect } from "react";
+import { Text, ScrollView, TouchableOpacity, Animated } from "react-native";
 import { WeatherContext } from "../context/WeatherContext";
 import WeatherImage from "./WeatherImage";
-import { useFonts } from "expo-font/build/FontHooks";
+
 import Loading from "./shared/Loading";
 
 export default function DailyForecast() {
-  const { forecast, isDailyReady,setActiveDay } = useContext(WeatherContext);
+  const { forecast, isDailyReady, setActiveDay } = useContext(WeatherContext);
 
-  const [isLoaded] = useFonts({
-    MontserratSemiBold: require("../../assets/fonts/Montserrat/Montserrat-SemiBold.ttf"),
-    MontserratLight: require("../../assets/fonts/Montserrat/Montserrat-Light.ttf"),
+  const opacity = new Animated.Value(0);
+  const opacityAnim = Animated.timing(opacity, {
+    toValue: 1,
+    duration: 500,
+    useNativeDriver: true,
   });
 
-  if (!isLoaded) {
-    return null;
-  }
+  useEffect(() => {
+    opacityAnim.start();
+  }, [forecast]);
 
   const weatherConditions = {
     "01": "Açık",
@@ -31,7 +33,14 @@ export default function DailyForecast() {
 
   function getMinMaxTemp(day) {
     const temps = day.map((info) => info.temperature);
-    return `${Math.max(...temps)}°  /  ${Math.min(...temps)}°`;
+    const max = Math.max(...temps);
+    const min = Math.min(...temps);
+
+    if (max === min) {
+      return `${max} °`;
+    }
+
+    return `${max}° / ${min}°`;
   }
 
   function getAverageIcon(day) {
@@ -57,17 +66,19 @@ export default function DailyForecast() {
     return frequent;
   }
 
-  if (!isDailyReady) {
+  if (!isDailyReady || forecast.length < 0) {
     return <Loading />;
   }
 
   return (
-    <ScrollView horizontal={true}>
+    <Animated.ScrollView style={{ opacity: opacity }} horizontal={true}>
       {Object.values(forecast).map((day, index) => {
         if (day.length > 0) {
           return (
             <TouchableOpacity
-              onPress={() => {setActiveDay(day.length > 0 ? day : forecast[index + 1])}}
+              onPress={() => {
+                setActiveDay(day.length > 0 ? day : forecast[index + 1]);
+              }}
               key={index}
               className="mx-2 w-24 h-44 flex justify-center items-center bg-[#090F23]/40 border-[1px] border-gray-600/30 rounded-md"
             >
@@ -99,6 +110,6 @@ export default function DailyForecast() {
           );
         }
       })}
-    </ScrollView>
+    </Animated.ScrollView>
   );
 }

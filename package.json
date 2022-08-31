@@ -25,7 +25,6 @@
     "expo-splash-screen": "~0.16.1",
     "expo-status-bar": "~1.4.0",
     "expo-updates": "~0.14.5",
-    "nanoid": "^4.0.0",
     "react": "18.0.0",
     "react-native": "0.69.5",
     "react-native-gesture-handler": "~2.5.0",
@@ -35,7 +34,8 @@
     "react-native-screens": "~3.15.0",
     "react-native-spinkit": "^1.5.1",
     "react-native-svg": "12.3.0",
-    "tailwindcss-react-native": "^1.7.10"
+    "tailwindcss-react-native": "^1.7.10",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

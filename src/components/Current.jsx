@@ -1,6 +1,5 @@
-import { View, Text, Image } from "react-native";
-import { useFonts } from "expo-font";
-import { useContext, useState } from "react";
+import { View, Text, Image,Animated } from "react-native";
+import { useContext, useEffect } from "react";
 import { WeatherContext } from "../context/WeatherContext";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faWind, faDroplet } from "@fortawesome/free-solid-svg-icons";
@@ -12,18 +11,23 @@ export default function Current() {
   const { weatherData, isCurrentReady, upperFirst } =
     useContext(WeatherContext);
 
-  const [fontsLoaded] = useFonts({
-    MontserratBlack: require("../../assets/fonts/Montserrat/Montserrat-Black.ttf"),
-    MontserratBold: require("../../assets/fonts/Montserrat/Montserrat-Bold.ttf"),
-    MontserratLight: require("../../assets/fonts/Montserrat/Montserrat-Light.ttf"),
-    DosisRegular: require("../../assets/fonts/Dosis/Dosis-Regular.ttf"),
-  });
+   // Animation
+   const opacity = new Animated.Value(0);
+   const opacityAnim = Animated.timing(opacity,{
+     toValue:1,
+     duration:500,
+     useNativeDriver:true
+   })
+ 
+   useEffect(()=> {
+     opacityAnim.start()
+   },[weatherData])
 
-  if (!fontsLoaded) {
-    return null;
-  }
-
-  if (!isCurrentReady || weatherData.name === undefined) {
+  if (
+    !isCurrentReady ||
+    weatherData.cod !== 200 ||
+    weatherData.name === undefined
+  ) {
     return <Loading />;
   }
 
@@ -41,9 +45,10 @@ export default function Current() {
     };
   }
 
-  
+ 
+
   return (
-    <View className="w-[90%] h-max my-4  rounded-lg">
+    <Animated.View style={{opacity:opacity}} className="w-[90%] h-max my-4  rounded-lg">
       <View className="flex flex-row justify-around items-center w-full h-24">
         <Logo />
         <View
@@ -136,6 +141,6 @@ export default function Current() {
           </View>
         </View>
       </View>
-    </View>
+    </Animated.View>
   );
 }

@@ -8,13 +8,10 @@ import {
   faCheck,
   faLocationCrosshairs,
 } from "@fortawesome/free-solid-svg-icons";
-import { useFonts } from "expo-font";
-import { customAlphabet } from "nanoid/non-secure";
 import Loading from "../components/shared/Loading";
 
 export default function LocationScreen({ navigation }) {
   const [editMode, setEditMode] = useState(false);
-
   const {
     API_KEY,
     lang,
@@ -31,15 +28,6 @@ export default function LocationScreen({ navigation }) {
     setIsLocationsReady,
     setIsHourlyReady,
   } = useContext(WeatherContext);
-
-  const [isLoaded] = useFonts({
-    MontserratLight: require("../../assets/fonts/Montserrat/Montserrat-Light.ttf"),
-    DosisRegular: require("../../assets/fonts/Dosis/Dosis-Regular.ttf"),
-  });
-
-  if (!isLoaded) {
-    return null;
-  }
 
   async function isLocationAvaible(location) {
     setIsLocationsReady(false);
@@ -148,9 +136,10 @@ export default function LocationScreen({ navigation }) {
         </TouchableOpacity>
 
         {isLocationsReady ? (
-          storedLocations.map((item) => {
+          storedLocations.map((item, index) => {
             return editMode ? (
               <TouchableOpacity
+                key={index}
                 onPress={() => {
                   setIsLocationsReady(false);
                   deleteStoredLocation(item);
@@ -170,6 +159,7 @@ export default function LocationScreen({ navigation }) {
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
+                key={index}
                 onPress={() => {
                   setLocation(item);
                   navigation.navigate("Home");
@@ -179,10 +169,6 @@ export default function LocationScreen({ navigation }) {
                 } px-3 py-1  my-3 w-min rounded-sm`}
               >
                 <Text
-                  key={customAlphabet(
-                    "abcdefghijklmnopqrstuvwxyz0123456789",
-                    10
-                  )}
                   style={{ fontFamily: "DosisRegular" }}
                   className="text-center text-base text-white"
                 >

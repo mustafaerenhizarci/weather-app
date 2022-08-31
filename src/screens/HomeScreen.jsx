@@ -4,8 +4,6 @@ import {
   RefreshControl,
   ImageBackground,
   SafeAreaView,
-  View,
-  Text,
 } from "react-native";
 import Current from "../components/Current";
 import { WeatherContext } from "../context/WeatherContext";
@@ -15,7 +13,7 @@ import DailyForecast from "../components/DailyForecast";
 import HourlyForecast from "../components/HourlyForecast";
 
 export default function HomeScreen({ navigation }) {
-  const { fetchCurrentWeather, fetchForecastWeather,activeDay,setActiveDay } =
+  const { fetchCurrentWeather, fetchForecastWeather, activeDay } =
     useContext(WeatherContext);
 
   const [refreshing, setRefreshing] = useState(false);
@@ -46,7 +44,7 @@ export default function HomeScreen({ navigation }) {
         >
           <HomeTop navigation={navigation} />
           <Current />
-          <HourlyForecast activeDay={activeDay}/>
+          <HourlyForecast activeDay={activeDay} />
           <DailyForecast />
         </ImageBackground>
       </ScrollView>

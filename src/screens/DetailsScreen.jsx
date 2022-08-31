@@ -2,19 +2,9 @@ import { View, Text, TouchableOpacity, Linking } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { faGithub, faFirefoxBrowser } from "@fortawesome/free-brands-svg-icons";
-import { useFonts } from "expo-font";
+
 
 export default function DetailsScreen({ navigation }) {
-  const [isLoaded] = useFonts({
-    MontserratBold: require("../../assets/fonts/Montserrat/Montserrat-Bold.ttf"),
-    MontserratSemiBold: require("../../assets/fonts/Montserrat/Montserrat-SemiBold.ttf"),
-    MontserratLight: require("../../assets/fonts/Montserrat/Montserrat-Light.ttf"),
-  });
-
-  if (!isLoaded) {
-    return null;
-  }
-
   return (
     <View className="w-full h-full pt-8 bg-[#090F23]">
       <View className="w-full flex flex-row justify-start items-center">
