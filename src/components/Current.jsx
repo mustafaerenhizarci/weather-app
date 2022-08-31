@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  Image,
-  ActivityIndicator,
-  ImageBackground,
-} from "react-native";
+import { View, Text, Image } from "react-native";
 import { useFonts } from "expo-font";
 import { useContext, useState } from "react";
 import { WeatherContext } from "../context/WeatherContext";
@@ -33,6 +27,21 @@ export default function Current() {
     return <Loading />;
   }
 
+  function getSunInfo() {
+    const sunrise = new Date(weatherData.sys.sunrise * 1000)
+      .toLocaleTimeString()
+      .slice(0, 5);
+    const sunset = new Date(weatherData.sys.sunset * 1000)
+      .toLocaleTimeString()
+      .slice(0, 5);
+
+    return {
+      sunrise: sunrise,
+      sunset: sunset,
+    };
+  }
+
+  
   return (
     <View className="w-[90%] h-max my-4  rounded-lg">
       <View className="flex flex-row justify-around items-center w-full h-24">
@@ -58,7 +67,7 @@ export default function Current() {
         </View>
       </View>
 
-      <View className="w-full  my-2 h-60 rounded-md">
+      <View className="w-full mt-2 mb-12 h-60 rounded-md">
         <View className="w-full flex flex-row justify-around items-center h-[60%]">
           <WeatherImage id={weatherData.weather[0].icon} w={90} h={90} />
           <View className="w-[40%] h-full flex justify-center items-center mr-4 ">
@@ -76,8 +85,8 @@ export default function Current() {
             </Text>
           </View>
         </View>
-        <View className=" h-[40%] flex flex-row justify-around items-center">
-          <View className=" flex flex-row justify-around gap-4 items-center">
+        <View className="flex flex-row justify-around items-center">
+          <View className="flex flex-row justify-around gap-4 items-center">
             <FontAwesomeIcon icon={faWind} size={25} color="#fde68a" />
             <Text
               style={{ fontFamily: "MontserratLight" }}
@@ -87,13 +96,42 @@ export default function Current() {
             </Text>
           </View>
 
-          <View className=" flex flex-row justify-around gap-4 items-center">
+          <View className="flex flex-row justify-around gap-4 items-center">
             <FontAwesomeIcon icon={faDroplet} size={25} color="#60a5fa" />
             <Text
               style={{ fontFamily: "MontserratLight" }}
               className="text-lg text-white"
             >
               {weatherData.main.humidity} %
+            </Text>
+          </View>
+        </View>
+        <View className="mt-5 flex flex-row justify-around gap-x-10 items-center">
+          <View className="h-16 flex justify-around  items-center">
+            <Image
+              className="w-10 h-10"
+              source={require("../../assets/weather-icons/sunrise.png")}
+              resizeMode="center"
+            />
+            <Text
+              style={{ fontFamily: "MontserratLight" }}
+              className="text-md text-white"
+            >
+              {getSunInfo().sunrise}
+            </Text>
+          </View>
+
+          <View className="h-16 flex justify-around  items-center">
+            <Image
+              className="w-10 h-10"
+              source={require("../../assets/weather-icons/sunset.png")}
+              resizeMode="center"
+            />
+            <Text
+              style={{ fontFamily: "MontserratLight" }}
+              className="text-md text-white"
+            >
+              {getSunInfo().sunset}
             </Text>
           </View>
         </View>

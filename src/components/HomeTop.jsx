@@ -45,11 +45,13 @@ const getLastUpdate = () => {
 export default function HomeTop({ navigation }) {
   return (
     <View className="w-[90%] mt-5 mb-1 flex flex-row justify-between items-center h-max">
-      <TouchableOpacity className="w-16 py-1 flex justify-center items-center  rounded-md">
+      <TouchableOpacity onPress={() => {
+        navigation.navigate("Details")
+      }} className="w-16 py-1 flex justify-center items-center  rounded-md">
         <FontAwesomeIcon size={23} color="#eee" icon={faEllipsisV} />
       </TouchableOpacity>
 
-      <Text className="text-gray-400 text-xs">Güncelleme: {getLastUpdate()}</Text>
+      <Text className="text-gray-400 text-xs">{getLastUpdate()}</Text>
 
       <TouchableOpacity
         onPress={() => {

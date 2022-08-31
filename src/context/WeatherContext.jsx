@@ -22,12 +22,12 @@ export default function WeatherProvider({ children }) {
   const API_URL = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${API_KEY}&lang=${lang}&units=metric`;
   const FORECAST_API_URL = `http://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${API_KEY}&lang=${lang}&units=metric`;
   const [weatherData, setWeatherData] = useState({});
-  const [forecast, setForecast] = useState({});
+  const [forecastDaily, setForecastDaily] = useState({});
 
   const [searchLocation, setSearchLocation] = useState("");
   const [isCurrentReady, setIsCurrentReady] = useState(false);
   const [isDailyReady, setIsDailyReady] = useState(false);
-  const [isLocationsReady,setIsLocationsReady] = useState(true);
+  const [isLocationsReady, setIsLocationsReady] = useState(true);
 
   async function fetchCurrentWeather() {
     const data = await fetch(API_URL).then((res) => res.json());
@@ -47,9 +47,11 @@ export default function WeatherProvider({ children }) {
 
     const dataConfigured = data.list.map((item) => {
       let date = item.dt_txt.split(" ");
+
       return {
         day: days[new Date(date[0]).getDay()],
         time: date[1].slice(0, 5),
+        dt: item.dt,
         temperature: Math.round(item.main.temp),
         description: upperFirst(item.weather[0].description),
         icon: item.weather[0].icon,
@@ -71,7 +73,10 @@ export default function WeatherProvider({ children }) {
         });
     });
 
-    setForecast(dailyForecast);
+    dailyForecast.sort((a, b) => {
+      return (a[0] && a[0].dt) - (b[0] && b[0].dt);
+    });
+    setForecastDaily(dailyForecast);
     setIsDailyReady(true);
 
     return 1;
@@ -101,11 +106,10 @@ export default function WeatherProvider({ children }) {
           population: Math.round(+city.populationCounts[0].value),
         };
       })
-      .sort((a, b) => b.population - a.population).map(item => item.name);
+      .sort((a, b) => b.population - a.population)
+      .map((item) => item.name);
 
-    setStoredLocations(ordered.slice(0,15));
-       
-    
+    setStoredLocations(ordered.slice(0, 15));
   }
 
   async function setGPS() {
@@ -164,7 +168,7 @@ export default function WeatherProvider({ children }) {
         fetchForecastWeather,
         fetchNearLocations,
         weatherData,
-        forecast,
+        forecastDaily,
         searchLocation,
         setSearchLocation,
         storedLocations,

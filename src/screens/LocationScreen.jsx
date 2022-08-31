@@ -41,7 +41,7 @@ export default function LocationScreen({ navigation }) {
   }
 
   async function isLocationAvaible(location) {
-    setIsLocationsReady(false)
+    setIsLocationsReady(false);
     const data = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${API_KEY}&lang=${lang}&units=metric`
     ).then((res) => res.json());
@@ -53,7 +53,7 @@ export default function LocationScreen({ navigation }) {
           Alert.alert(
             "Place already added!",
             `There is place named ${data.name}.`,
-            [{ text: "OK",onPress:setIsLocationsReady(true) }]
+            [{ text: "OK", onPress: setIsLocationsReady(true) }]
           );
           return prev;
         }
@@ -61,7 +61,7 @@ export default function LocationScreen({ navigation }) {
       setIsLocationsReady(true);
     } else {
       Alert.alert("Search Error", `There is no place named ${searchLocation}`, [
-        { text: "OK",onPress:setIsLocationsReady(true) },
+        { text: "OK", onPress: setIsLocationsReady(true) },
       ]);
     }
   }
@@ -86,10 +86,7 @@ export default function LocationScreen({ navigation }) {
   };
 
   return (
-    <View
-      style={{ backgroundColor: "#090F23" }}
-      className="h-full pt-8 flex justify-start items-center"
-    >
+    <View className="h-full bg-[#090F23] pt-8 flex justify-start items-center">
       <View className="w-full flex flex-row justify-around items-center">
         <TouchableOpacity
           onPress={() => {
@@ -106,7 +103,7 @@ export default function LocationScreen({ navigation }) {
           style={{ fontFamily: "MontserratLight" }}
           placeholderTextColor="#eee"
           className="w-[60%] bg-gray-700 rounded-md px-3 py-1 text-md text-white"
-          placeholder="Enter Location"
+          placeholder="Konum Giriniz"
         />
         {storedLocations.length > 0 &&
           (!editMode ? (
@@ -125,7 +122,12 @@ export default function LocationScreen({ navigation }) {
             </TouchableOpacity>
           ))}
       </View>
-      <Text style={{fontFamily:"MontserratLight"}} className="text-gray-400 text-sm text-left w-full px-6 pt-3">Suggested Places: </Text>
+      <Text
+        style={{ fontFamily: "MontserratLight" }}
+        className="text-gray-400 text-sm text-left w-full px-6 pt-3"
+      >
+        Sık Kullanılanlar:{" "}
+      </Text>
       <View className="w-full  px-6 py-4 flex flex-wrap flex-row justify-start gap-2 items-center">
         <TouchableOpacity
           onPress={() => {
@@ -142,49 +144,56 @@ export default function LocationScreen({ navigation }) {
             size={20}
           />
         </TouchableOpacity>
-        
-        {(isLocationsReady) ? storedLocations.map((item) => {
-          return editMode ? (
-            <TouchableOpacity
-              onPress={() => {
-                setIsLocationsReady(false);
-                deleteStoredLocation(item);
-                setGPS();
-                setIsCurrentReady(false);
-              }}
-              className="bg-red-700 px-3 py-1 my-3 w-min rounded-sm"
-            >
-              <Text
-                key={Math.random() * 1000}
-                style={{ fontFamily: "DosisRegular" }}
-                className="text-center text-base text-white"
-              >
-                {item}
-              </Text>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              onPress={() => {
-                setLocation(item);
-                setIsDailyReady(false);
-                setIsCurrentReady(false);
 
-                navigation.navigate("Home");
-              }}
-              className={`${
-                location === item ? "bg-blue-700" : "bg-gray-800"
-              } px-3 py-1  my-3 w-min rounded-sm`}
-            >
-              <Text
-                key={customAlphabet("abcdefghijklmnopqrstuvwxyz0123456789", 10)}
-                style={{ fontFamily: "DosisRegular" }}
-                className="text-center text-base text-white"
+        {isLocationsReady ? (
+          storedLocations.map((item) => {
+            return editMode ? (
+              <TouchableOpacity
+                onPress={() => {
+                  setIsLocationsReady(false);
+                  deleteStoredLocation(item);
+                  setGPS();
+                  setIsCurrentReady(false);
+                }}
+                className="bg-red-700 px-3 py-1 my-3 w-min rounded-sm"
               >
-                {item}
-              </Text>
-            </TouchableOpacity>
-          );
-        }) : <Loading text="Locations Loading..."/>  }
+                <Text
+                  key={Math.random() * 1000}
+                  style={{ fontFamily: "DosisRegular" }}
+                  className="text-center text-base text-white"
+                >
+                  {item}
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                onPress={() => {
+                  setLocation(item);
+                  setIsDailyReady(false);
+                  setIsCurrentReady(false);
+
+                  navigation.navigate("Home");
+                }}
+                className={`${
+                  location === item ? "bg-blue-700" : "bg-gray-800"
+                } px-3 py-1  my-3 w-min rounded-sm`}
+              >
+                <Text
+                  key={customAlphabet(
+                    "abcdefghijklmnopqrstuvwxyz0123456789",
+                    10
+                  )}
+                  style={{ fontFamily: "DosisRegular" }}
+                  className="text-center text-base text-white"
+                >
+                  {item}
+                </Text>
+              </TouchableOpacity>
+            );
+          })
+        ) : (
+          <Loading text="Locations Loading..." />
+        )}
       </View>
     </View>
   );
