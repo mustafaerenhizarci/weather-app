@@ -1,12 +1,12 @@
 import { useContext } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Touchable, TouchableOpacity } from "react-native";
 import { WeatherContext } from "../context/WeatherContext";
 import WeatherImage from "./WeatherImage";
 import { useFonts } from "expo-font/build/FontHooks";
 import Loading from "./shared/Loading";
 
 export default function DailyForecast() {
-  const { forecastDaily, isDailyReady } = useContext(WeatherContext);
+  const { forecast, isDailyReady,setActiveDay } = useContext(WeatherContext);
 
   const [isLoaded] = useFonts({
     MontserratSemiBold: require("../../assets/fonts/Montserrat/Montserrat-SemiBold.ttf"),
@@ -63,10 +63,11 @@ export default function DailyForecast() {
 
   return (
     <ScrollView horizontal={true}>
-      {Object.values(forecastDaily).map((day, index) => {
-        if (day.length > 0 && day[0].day !== "Bugün") {
+      {Object.values(forecast).map((day, index) => {
+        if (day.length > 0) {
           return (
-            <View
+            <TouchableOpacity
+              onPress={() => {setActiveDay(day.length > 0 ? day : forecast[index + 1])}}
               key={index}
               className="mx-2 w-24 h-44 flex justify-center items-center bg-[#090F23]/40 border-[1px] border-gray-600/30 rounded-md"
             >
@@ -79,25 +80,22 @@ export default function DailyForecast() {
               <Text className="text-white/70 text-xs text-center mt-1">
                 {
                   weatherConditions[
-                    getAverageIcon(Object.values(forecastDaily)[index]).slice(
-                      0,
-                      2
-                    )
+                    getAverageIcon(Object.values(forecast)[index]).slice(0, 2)
                   ]
                 }
               </Text>
               <WeatherImage
                 w={60}
                 h={60}
-                id={getAverageIcon(Object.values(forecastDaily)[index])}
+                id={getAverageIcon(Object.values(forecast)[index])}
               />
               <Text
                 style={{ fontFamily: "MontserratLight" }}
                 className="text-white text-md"
               >
-                {getMinMaxTemp(Object.values(forecastDaily)[index])}
+                {getMinMaxTemp(Object.values(forecast)[index])}
               </Text>
-            </View>
+            </TouchableOpacity>
           );
         }
       })}

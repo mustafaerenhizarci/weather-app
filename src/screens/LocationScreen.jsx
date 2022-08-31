@@ -29,6 +29,7 @@ export default function LocationScreen({ navigation }) {
     setIsDailyReady,
     isLocationsReady,
     setIsLocationsReady,
+    setIsHourlyReady,
   } = useContext(WeatherContext);
 
   const [isLoaded] = useFonts({
@@ -134,6 +135,7 @@ export default function LocationScreen({ navigation }) {
             setGPS();
             setIsDailyReady(false);
             setIsCurrentReady(false);
+            setIsHourlyReady(false);
             navigation.navigate("Home");
           }}
           className={` bg-amber-400 px-3 py-2 my-3 rounded-sm flex justify-center items-center`}
@@ -154,6 +156,7 @@ export default function LocationScreen({ navigation }) {
                   deleteStoredLocation(item);
                   setGPS();
                   setIsCurrentReady(false);
+                  setIsHourlyReady(false);
                 }}
                 className="bg-red-700 px-3 py-1 my-3 w-min rounded-sm"
               >
@@ -169,9 +172,6 @@ export default function LocationScreen({ navigation }) {
               <TouchableOpacity
                 onPress={() => {
                   setLocation(item);
-                  setIsDailyReady(false);
-                  setIsCurrentReady(false);
-
                   navigation.navigate("Home");
                 }}
                 className={`${
@@ -192,7 +192,7 @@ export default function LocationScreen({ navigation }) {
             );
           })
         ) : (
-          <Loading text="Locations Loading..." />
+          <Loading />
         )}
       </View>
     </View>

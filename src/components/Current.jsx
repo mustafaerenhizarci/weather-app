@@ -67,7 +67,7 @@ export default function Current() {
         </View>
       </View>
 
-      <View className="w-full mt-2 mb-12 h-60 rounded-md">
+      <View className="w-full mt-2 mb-2 h-60 rounded-md">
         <View className="w-full flex flex-row justify-around items-center h-[60%]">
           <WeatherImage id={weatherData.weather[0].icon} w={90} h={90} />
           <View className="w-[40%] h-full flex justify-center items-center mr-4 ">

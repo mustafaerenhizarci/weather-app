@@ -22,11 +22,13 @@ export default function WeatherProvider({ children }) {
   const API_URL = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${API_KEY}&lang=${lang}&units=metric`;
   const FORECAST_API_URL = `http://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${API_KEY}&lang=${lang}&units=metric`;
   const [weatherData, setWeatherData] = useState({});
-  const [forecastDaily, setForecastDaily] = useState({});
+  const [forecast, setForecast] = useState({});
+  const [activeDay, setActiveDay] = useState([]);
 
   const [searchLocation, setSearchLocation] = useState("");
   const [isCurrentReady, setIsCurrentReady] = useState(false);
   const [isDailyReady, setIsDailyReady] = useState(false);
+  const [isHourlyReady,setIsHourlyReady] = useState(false);
   const [isLocationsReady, setIsLocationsReady] = useState(true);
 
   async function fetchCurrentWeather() {
@@ -60,7 +62,7 @@ export default function WeatherProvider({ children }) {
       };
     });
 
-    const dailyForecast = days.map((day) => {
+    const forecast = days.map((day) => {
       return dataConfigured
         .filter((item) => item.day === day)
         .map((info) => {
@@ -73,10 +75,20 @@ export default function WeatherProvider({ children }) {
         });
     });
 
-    dailyForecast.sort((a, b) => {
-      return (a[0] && a[0].dt) - (b[0] && b[0].dt);
+    forecast.sort((a, b) => {
+      if (a[0] && b[0]) {
+        const aDate = new Date(a[0].dt * 1000);
+        const bDate = new Date(b[0].dt * 1000);
+        return aDate - bDate;
+      }
     });
-    setForecastDaily(dailyForecast);
+
+    forecast.unshift(forecast.pop(forecast.length - 1));
+    
+    setActiveDay(forecast[0].length > 0 ? forecast[0] : forecast[1]);
+    setIsHourlyReady(true);
+
+    setForecast(forecast);
     setIsDailyReady(true);
 
     return 1;
@@ -126,6 +138,7 @@ export default function WeatherProvider({ children }) {
     );
     setIsCurrentReady(true);
     setIsDailyReady(true);
+    setIsHourlyReady(true);
 
     return gps;
   }
@@ -168,7 +181,7 @@ export default function WeatherProvider({ children }) {
         fetchForecastWeather,
         fetchNearLocations,
         weatherData,
-        forecastDaily,
+        forecast,
         searchLocation,
         setSearchLocation,
         storedLocations,
@@ -180,10 +193,14 @@ export default function WeatherProvider({ children }) {
         setIsCurrentReady,
         isDailyReady,
         setIsDailyReady,
+        isHourlyReady,
+        setIsHourlyReady,
         isLocationsReady,
         setIsLocationsReady,
         upperFirst,
         days,
+        activeDay,
+        setActiveDay,
       }}
     >
       {children}
