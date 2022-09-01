@@ -5,7 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
 import { useNetInfo } from "@react-native-community/netinfo";
-import { API_KEY_ENV, API_KEY_ENVX } from "@env";
+import { API_KEY_ENV } from "@env";
 // Importing Components
 import WeatherContext from "./src/context/WeatherContext";
 

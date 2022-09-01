@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import * as Location from "expo-location";
-import {API_KEY_ENV} from '@env'
+import { API_KEY_ENV } from "@env";
 
 export const WeatherContext = createContext();
 
@@ -23,7 +23,7 @@ export default function WeatherProvider({ children }) {
   const API_URL = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${API_KEY}&lang=${lang}&units=metric`;
   const FORECAST_API_URL = `http://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${API_KEY}&lang=${lang}&units=metric`;
   const [weatherData, setWeatherData] = useState({});
-  const [forecast, setForecast] = useState({});
+  const [forecast, setForecast] = useState([]);
   const [activeDay, setActiveDay] = useState([]);
 
   const [searchLocation, setSearchLocation] = useState("");
@@ -36,7 +36,7 @@ export default function WeatherProvider({ children }) {
     const data = await fetch(API_URL).then((res) => res.json());
 
     setWeatherData(data);
-    
+
     if (data.cod === 200) {
       setIsCurrentReady(true);
       return true;
