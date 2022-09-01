@@ -5,7 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
 import { useNetInfo } from "@react-native-community/netinfo";
-import Constants from 'expo-constants';
+import Constants from "expo-constants";
 
 // Importing Components
 import WeatherContext from "./src/context/WeatherContext";
@@ -15,8 +15,6 @@ import NoInternet from "./src/components/NoInternet";
 import InvalidApiKey from "./src/components/InvalidApiKey";
 
 function App() {
-  
-  
   const [isApiValid, setIsApiValid] = useState(true);
 
   useEffect(() => {
@@ -71,7 +69,5 @@ function App() {
     </TailwindProvider>
   );
 }
-
-
 
 export default App;
