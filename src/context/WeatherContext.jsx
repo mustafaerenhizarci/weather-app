@@ -132,10 +132,15 @@ export default function WeatherProvider({ children }) {
     }
 
     const gps = await Location.getCurrentPositionAsync({});
-
-    setLocation(
-      await getClientLocationName(gps.coords.latitude, gps.coords.longitude)
+    const clientLocation = await getClientLocationName(
+      gps.coords.latitude,
+      gps.coords.longitude
     );
+
+    if (location !== clientLocation) {
+      setLocation(clientLocation);
+    }
+
     setIsCurrentReady(true);
     setIsDailyReady(true);
     setIsHourlyReady(true);

@@ -120,10 +120,10 @@ export default function LocationScreen({ navigation }) {
       <View className="w-full  px-6 py-4 flex flex-wrap flex-row justify-start gap-2 items-center">
         <TouchableOpacity
           onPress={() => {
-            setGPS();
             setIsDailyReady(false);
             setIsCurrentReady(false);
             setIsHourlyReady(false);
+            setGPS();
             navigation.navigate("Home");
           }}
           className={` bg-amber-400 px-3 py-2 my-3 rounded-sm flex justify-center items-center`}
@@ -142,10 +142,10 @@ export default function LocationScreen({ navigation }) {
                 key={index}
                 onPress={() => {
                   setIsLocationsReady(false);
-                  deleteStoredLocation(item);
-                  setGPS();
                   setIsCurrentReady(false);
                   setIsHourlyReady(false);
+                  deleteStoredLocation(item);
+                  setGPS();
                 }}
                 className="bg-red-700 px-3 py-1 my-3 w-min rounded-sm"
               >
@@ -161,7 +161,13 @@ export default function LocationScreen({ navigation }) {
               <TouchableOpacity
                 key={index}
                 onPress={() => {
-                  setLocation(item);
+                  if (location !== item) {
+                    setIsDailyReady(false);
+                    setIsCurrentReady(false);
+                    setIsHourlyReady(false);
+                    setLocation(item);
+                  }
+
                   navigation.navigate("Home");
                 }}
                 className={`${

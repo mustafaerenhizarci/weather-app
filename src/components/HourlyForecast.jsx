@@ -2,20 +2,10 @@ import { useContext, useRef, useEffect } from "react";
 import { WeatherContext } from "../context/WeatherContext";
 import { ScrollView, Text, View,Animated } from "react-native";
 import Loading from "../components/shared/Loading";
+import * as Animatable from 'react-native-animatable'
 
 export default function HourlyForecast({ activeDay }) {
   const { isHourlyReady,forecast } = useContext(WeatherContext);
-
-  const opacity = new Animated.Value(0);
-  const opacityAnim = Animated.timing(opacity,{
-    toValue:1,
-    duration:500,
-    useNativeDriver:true
-  })
-
-  useEffect(()=> {
-    opacityAnim.start()
-  },[forecast])
 
   const scrollRef = useRef();
 
@@ -30,7 +20,8 @@ export default function HourlyForecast({ activeDay }) {
   
 
   return (
-    <Animated.View style={{opacity:opacity}} className="w-full flex justify-center items-center">
+    <Animatable.View animation="bounceInRight" delay={700}
+    useNativeDriver={true}  className="w-full flex justify-center items-center">
       <Text
         style={{ fontFamily: "DosisRegular" }}
         className="text-white text-md text-center"
@@ -70,6 +61,6 @@ export default function HourlyForecast({ activeDay }) {
           );
         })}
       </ScrollView>
-    </Animated.View>
+    </Animatable.View>
   );
 }

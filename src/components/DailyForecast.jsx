@@ -2,22 +2,11 @@ import { useContext, useEffect } from "react";
 import { Text, ScrollView, TouchableOpacity, Animated } from "react-native";
 import { WeatherContext } from "../context/WeatherContext";
 import WeatherImage from "./WeatherImage";
-
+import * as Animatable from 'react-native-animatable' 
 import Loading from "./shared/Loading";
 
 export default function DailyForecast() {
   const { forecast, isDailyReady, setActiveDay } = useContext(WeatherContext);
-
-  const opacity = new Animated.Value(0);
-  const opacityAnim = Animated.timing(opacity, {
-    toValue: 1,
-    duration: 500,
-    useNativeDriver: true,
-  });
-
-  useEffect(() => {
-    opacityAnim.start();
-  }, [forecast]);
 
   const weatherConditions = {
     "01": "Açık",
@@ -71,7 +60,8 @@ export default function DailyForecast() {
   }
 
   return (
-    <Animated.ScrollView style={{ opacity: opacity }} horizontal={true}>
+    <Animatable.View animation="bounceInLeft" delay={900} useNativeDriver={true}>
+      <ScrollView horizontal={true}>
       {Object.values(forecast).map((day, index) => {
         if (day.length > 0) {
           return (
@@ -110,6 +100,7 @@ export default function DailyForecast() {
           );
         }
       })}
-    </Animated.ScrollView>
+    </ScrollView>
+    </Animatable.View>
   );
 }

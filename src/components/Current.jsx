@@ -1,27 +1,16 @@
-import { View, Text, Image,Animated } from "react-native";
-import { useContext, useEffect } from "react";
+import { View, Text, Image, Animated } from "react-native";
+import { useContext, useEffect,useRef } from "react";
 import { WeatherContext } from "../context/WeatherContext";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faWind, faDroplet } from "@fortawesome/free-solid-svg-icons";
 import WeatherImage from "./WeatherImage";
 import Logo from "./Logo";
 import Loading from "./shared/Loading";
+import * as Animatable from 'react-native-animatable';
 
 export default function Current() {
   const { weatherData, isCurrentReady, upperFirst } =
     useContext(WeatherContext);
-
-   // Animation
-   const opacity = new Animated.Value(0);
-   const opacityAnim = Animated.timing(opacity,{
-     toValue:1,
-     duration:500,
-     useNativeDriver:true
-   })
- 
-   useEffect(()=> {
-     opacityAnim.start()
-   },[weatherData])
 
   if (
     !isCurrentReady ||
@@ -45,10 +34,13 @@ export default function Current() {
     };
   }
 
- 
-
   return (
-    <Animated.View style={{opacity:opacity}} className="w-[90%] h-max my-4  rounded-lg">
+    <Animatable.View
+      animation="bounceInLeft"
+      delay={500}
+      useNativeDriver={true}
+      className="w-[90%] h-max my-4  rounded-lg"
+    >
       <View className="flex flex-row justify-around items-center w-full h-24">
         <Logo />
         <View
@@ -141,6 +133,6 @@ export default function Current() {
           </View>
         </View>
       </View>
-    </Animated.View>
+    </Animatable.View>
   );
 }
