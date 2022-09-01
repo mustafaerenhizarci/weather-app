@@ -5,8 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
 import { useNetInfo } from "@react-native-community/netinfo";
-import config from "./config";
-
+import Constants from 'expo-constants';
 
 // Importing Components
 import WeatherContext from "./src/context/WeatherContext";
@@ -16,6 +15,8 @@ import NoInternet from "./src/components/NoInternet";
 import InvalidApiKey from "./src/components/InvalidApiKey";
 
 function App() {
+  
+  
   const [isApiValid, setIsApiValid] = useState(true);
 
   useEffect(() => {
@@ -23,7 +24,9 @@ function App() {
   }, []);
 
   async function testApiKey() {
-    const API_URL = `https://api.openweathermap.org/data/2.5/weather?q=${"ankara"}&appid=${config.API_KEY}&lang=${"tr"}&units=metric`;
+    const API_URL = `https://api.openweathermap.org/data/2.5/weather?q=${"ankara"}&appid=${
+      Constants.manifest.extra.environment["API_KEY"]
+    }&lang=${"tr"}&units=metric`;
     const data = await fetch(API_URL).then((res) => res.json());
     const code = data.cod;
 
@@ -68,5 +71,7 @@ function App() {
     </TailwindProvider>
   );
 }
+
+
 
 export default App;

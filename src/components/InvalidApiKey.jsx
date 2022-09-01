@@ -3,7 +3,7 @@ import { TailwindProvider } from "tailwindcss-react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faKey } from "@fortawesome/free-solid-svg-icons";
 import * as Animatable from "react-native-animatable";
-import config from "../../config";
+import Constants  from "expo-constants";
 
 export default function InvalidApiKey() {
   return (
@@ -21,7 +21,7 @@ export default function InvalidApiKey() {
         </View>
 
         <Text className="text-white text-2xl">Invalid API key</Text>
-        <Text className="text-white text-md">key = {config.API_KEY}</Text>
+        <Text className="text-white text-md">key = {Constants.manifest.extra.environment['API_KEY']}</Text>
       </View>
     </TailwindProvider>
   );
