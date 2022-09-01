@@ -5,7 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
 import { useNetInfo } from "@react-native-community/netinfo";
-import { API_KEY_ENV } from "@env";
+import { REACT_NATIVE_API_KEY_ENV } from "@env";
 // Importing Components
 import WeatherContext from "./src/context/WeatherContext";
 
@@ -21,7 +21,7 @@ function App() {
   }, []);
 
   async function testApiKey() {
-    const API_URL = `https://api.openweathermap.org/data/2.5/weather?q=${"ankara"}&appid=${API_KEY_ENV}&lang=${"tr"}&units=metric`;
+    const API_URL = `https://api.openweathermap.org/data/2.5/weather?q=${"ankara"}&appid=${REACT_NATIVE_API_KEY_ENV}&lang=${"tr"}&units=metric`;
     const data = await fetch(API_URL).then((res) => res.json());
     const code = data.cod;
 

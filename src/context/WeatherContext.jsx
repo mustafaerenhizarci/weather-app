@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import * as Location from "expo-location";
-import { API_KEY_ENV } from "@env";
+import { REACT_NATIVE_API_KEY_ENV } from "@env";
 
 export const WeatherContext = createContext();
 
@@ -15,7 +15,7 @@ export default function WeatherProvider({ children }) {
     "Cumartesi",
   ];
 
-  const API_KEY = API_KEY_ENV;
+  const API_KEY = REACT_NATIVE_API_KEY_ENV;
   const [location, setLocation] = useState(0);
   const [storedLocations, setStoredLocations] = useState([]);
   const [lang, setLang] = useState("tr");

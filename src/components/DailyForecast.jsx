@@ -67,7 +67,7 @@ export default function DailyForecast() {
           return (
             <TouchableOpacity
               onPress={() => {
-                setActiveDay(day.length > 0 ? day : forecast[index + 1]);
+                setActiveDay(day.length > 1 ? day : forecast[index + 1]);
               }}
               key={index}
               className="mx-2 w-24 h-44 flex justify-center items-center bg-[#090F23]/40 border-[1px] border-gray-600/30 rounded-md"
