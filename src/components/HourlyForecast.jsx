@@ -30,9 +30,7 @@ export default function HourlyForecast({ activeDay }) {
       </Text>
       <ScrollView
         ref={scrollRef}
-        onScrollAnimationEnd={() => {
-          console.log("asdaads");
-        }}
+        
         horizontal={true}
         className="my-2 w-[90%] border-[1px] rounded-sm bg-black/30 border-white/20 py-1"
       >

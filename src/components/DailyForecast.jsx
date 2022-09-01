@@ -61,7 +61,7 @@ export default function DailyForecast() {
 
   return (
     <Animatable.View animation="bounceInLeft" delay={900} useNativeDriver={true}>
-      <ScrollView horizontal={true}>
+      <ScrollView horizontal={true} className="my-2">
       {Object.values(forecast).map((day, index) => {
         if (day.length > 0) {
           return (

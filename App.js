@@ -1,16 +1,37 @@
-import { StatusBar } from "react-native";
+import { StatusBar, View, Text } from "react-native";
 import { TailwindProvider } from "tailwindcss-react-native";
-import * as React from "react";
+import { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
-
+import { useNetInfo } from "@react-native-community/netinfo";
+import { API_KEY_ENV, API_KEY_ENVX } from "@env";
 // Importing Components
 import WeatherContext from "./src/context/WeatherContext";
 
 import Navigator from "./src/Navigator";
+import NoInternet from "./src/components/NoInternet";
+import InvalidApiKey from "./src/components/InvalidApiKey";
 
 function App() {
+  const [isApiValid, setIsApiValid] = useState(true);
+
+  useEffect(() => {
+    testApiKey();
+  }, []);
+
+  async function testApiKey() {
+    const API_URL = `https://api.openweathermap.org/data/2.5/weather?q=${"ankara"}&appid=${API_KEY_ENV}&lang=${"tr"}&units=metric`;
+    const data = await fetch(API_URL).then((res) => res.json());
+    const code = data.cod;
+
+    if (code !== 200) {
+      setIsApiValid(false);
+    } else {
+      setIsApiValid(true);
+    }
+  }
+
   const fonts = {
     DosisRegular: require("./assets/fonts/Dosis/Dosis-Regular.ttf"),
     MontserratBlack: require("./assets/fonts/Montserrat/Montserrat-Black.ttf"),
@@ -25,9 +46,17 @@ function App() {
     SplashScreen.hideAsync();
   }
 
+  if (!useNetInfo().isConnected) {
+    return <NoInternet />;
+  }
+
+  if (!isApiValid) {
+    return <InvalidApiKey />;
+  }
+
   return (
     <TailwindProvider>
-      <StatusBar barStyle={"default"} backgroundColor="#090F23" />
+      <StatusBar barStyle={"default"} backgroundColor="#100118" />
 
       <WeatherContext>
         <NavigationContainer>

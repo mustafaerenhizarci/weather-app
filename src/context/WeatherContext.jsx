@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import * as Location from "expo-location";
+import {API_KEY_ENV} from '@env'
 
 export const WeatherContext = createContext();
 
@@ -14,7 +15,7 @@ export default function WeatherProvider({ children }) {
     "Cumartesi",
   ];
 
-  const API_KEY = "bdaf867dfce9dd5890c6936c19cbae38";
+  const API_KEY = API_KEY_ENV;
   const [location, setLocation] = useState(0);
   const [storedLocations, setStoredLocations] = useState([]);
   const [lang, setLang] = useState("tr");
@@ -35,6 +36,7 @@ export default function WeatherProvider({ children }) {
     const data = await fetch(API_URL).then((res) => res.json());
 
     setWeatherData(data);
+    
     if (data.cod === 200) {
       setIsCurrentReady(true);
       return true;
@@ -121,7 +123,7 @@ export default function WeatherProvider({ children }) {
       .sort((a, b) => b.population - a.population)
       .map((item) => item.name);
 
-    setStoredLocations(ordered.slice(0, 15));
+    setStoredLocations(ordered.slice(0, 35));
   }
 
   async function setGPS() {

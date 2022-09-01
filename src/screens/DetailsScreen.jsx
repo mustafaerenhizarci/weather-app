@@ -6,7 +6,7 @@ import { faGithub, faFirefoxBrowser } from "@fortawesome/free-brands-svg-icons";
 
 export default function DetailsScreen({ navigation }) {
   return (
-    <View className="w-full h-full pt-8 bg-[#090F23]">
+    <View className="w-full h-full pt-8 bg-[#100118]">
       <View className="w-full flex flex-row justify-start items-center">
         <TouchableOpacity
           onPress={() => {

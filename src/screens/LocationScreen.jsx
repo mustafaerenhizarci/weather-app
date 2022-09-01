@@ -40,8 +40,8 @@ export default function LocationScreen({ navigation }) {
           return [data.name, ...prev];
         } else {
           Alert.alert(
-            "Place already added!",
-            `There is place named ${data.name}.`,
+            "Konum zaten eklendi",
+            `Sık kullanılanlarınızda zaten ${data.name} adlı konum var.`,
             [{ text: "OK", onPress: setIsLocationsReady(true) }]
           );
           return prev;
@@ -49,7 +49,7 @@ export default function LocationScreen({ navigation }) {
       });
       setIsLocationsReady(true);
     } else {
-      Alert.alert("Search Error", `There is no place named ${searchLocation}`, [
+      Alert.alert("Konum bulunamadı", `${searchLocation} adlı konum bulunamadı, lütfen konum adını doğru yazdığınızdan emin olunuz.`, [
         { text: "OK", onPress: setIsLocationsReady(true) },
       ]);
     }
@@ -75,7 +75,7 @@ export default function LocationScreen({ navigation }) {
   };
 
   return (
-    <View className="h-full bg-[#090F23] pt-8 flex justify-start items-center">
+    <View className="h-full bg-[#100118] pt-8 flex justify-start items-center">
       <View className="w-full flex flex-row justify-around items-center">
         <TouchableOpacity
           onPress={() => {
