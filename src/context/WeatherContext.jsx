@@ -46,14 +46,15 @@ export default function WeatherProvider({ children }) {
   }
 
   async function fetchForecastWeather() {
-    const today = new Date();
+    
     const data = await fetch(FORECAST_API_URL).then((res) => res.json());
 
     const dataConfigured = data.list.map((item) => {
       let date = item.dt_txt.split(" ");
-
+      
       return {
         day: days[new Date(date[0]).getDay()],
+        date:new Date(item.dt * 1000).toLocaleDateString().slice(0,5),
         time: date[1].slice(0, 5),
         dt: item.dt,
         temperature: Math.round(item.main.temp),
@@ -64,34 +65,41 @@ export default function WeatherProvider({ children }) {
       };
     });
 
-    const forecast = days.map((day) => {
-      return dataConfigured
-        .filter((item) => item.day === day)
-        .map((info) => {
-          if (info.day === days[today.getDay()]) {
-            info.day = "Bugün";
-          } else if (info.day === days[today.getDay() + 1]) {
-            info.day = "Yarın";
-          }
-          return info;
-        });
-    });
+    const forecast = [];
 
-    forecast.sort((a, b) => {
-      if (a[0] && b[0]) {
-        const aDate = new Date(a[0].dt * 1000);
-        const bDate = new Date(b[0].dt * 1000);
-        return aDate - bDate;
+    for (var i = 0; i < 6; i++) {
+      const todayIndex = new Date().getDay();
+      let nextDay;
+      if (todayIndex + i <= 6) {
+        nextDay = days[todayIndex + i];
+      } else {
+        nextDay = days[Math.abs(todayIndex + i - 7)];
       }
-    });
 
-    forecast.unshift(forecast.pop(forecast.length - 1));
+      const day = dataConfigured.filter((item) => item.day === nextDay);
 
-    setActiveDay(forecast[0].length > 1 ? forecast[0] : forecast[1]);
-    setIsHourlyReady(true);
+      day.map((info) => {
+        if (info.day === days[todayIndex]) {
+          info.day = "Bugün";
+        } else if (
+          info.day ===
+          (todayIndex + 1 <= 6
+            ? days[todayIndex + 1]
+            : days[Math.abs(todayIndex + 1 - 7)])
+        ) {
+          info.day = "Yarın";
+        }
+        return info;
+      });
+
+      forecast.push(day);
+    }
 
     setForecast(forecast);
+    setActiveDay(forecast[0].length > 1 ? forecast[0] : forecast[1]);
+
     setIsDailyReady(true);
+    setIsHourlyReady(true);
 
     return 1;
   }

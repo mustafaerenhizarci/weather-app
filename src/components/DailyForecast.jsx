@@ -70,7 +70,7 @@ export default function DailyForecast() {
                 setActiveDay(day.length > 0 ? day : forecast[index + 1]);
               }}
               key={index}
-              className="mx-2 w-24 h-44 flex justify-center items-center bg-[#090F23]/40 border-[1px] border-gray-600/30 rounded-md"
+              className="mx-2 w-24 h-48 flex justify-center items-center bg-[#090F23]/40 border-[1px] border-gray-600/30 rounded-md"
             >
               <Text
                 style={{ fontFamily: "MontserratSemiBold" }}
@@ -78,7 +78,8 @@ export default function DailyForecast() {
               >
                 {day[0].day}
               </Text>
-              <Text className="text-white/70 text-xs text-center mt-1">
+              <Text className="text-white/70 text-xs my-1">{day[0].date}</Text>
+              <Text className="text-white/70 text-xs text-center">
                 {
                   weatherConditions[
                     getAverageIcon(Object.values(forecast)[index]).slice(0, 2)
